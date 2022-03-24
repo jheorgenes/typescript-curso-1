@@ -1,8 +1,10 @@
 import { View } from './view.js';
 import { Negociacoes } from '../models/negociacoes.js';
+import { espace } from '../decorators/escape.js';
 
 export class NegociacoesView extends View<Negociacoes> {
 
+    @espace
     protected template(model: Negociacoes): string {
         return `
             <table class="table table-hover table-bordered">

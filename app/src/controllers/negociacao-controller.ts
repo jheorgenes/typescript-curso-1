@@ -3,23 +3,31 @@ import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
 import { Negociacoes } from '../models/negociacoes.js';
 import { Negociacao } from '../models/negociacao.js';
+import { logarTempoDeExecucao } from '../decorators/logar-tempo-de-execucao.js';
+import { inspect } from '../decorators/inspect.js';
+import { domInjector } from '../decorators/dom-injector.js';
 
 export class NegociacaoController {
     
+    @domInjector('#data')
     private inputData: HTMLInputElement;
+    @domInjector('#quantidade')
     private inputQuantidade: HTMLInputElement;
+    @domInjector('#valor')
     private inputValor: HTMLInputElement;
     private negociacoes = new Negociacoes(); //Obtendo uma inferência de negociações
-    private negociacoesView = new NegociacoesView('#negociacoesView', true);
+    private negociacoesView = new NegociacoesView('#negociacoesView');
     private mensagemView = new MensagemView('#mensagemView');
 
     constructor() {
-        this.inputData = <HTMLInputElement> document.querySelector('#data'); //Fazendo um cast explícito no ts para o objeto HTMLInputElement
+/*      this.inputData = <HTMLInputElement> document.querySelector('#data'); //Fazendo um cast explícito no ts para o objeto HTMLInputElement
         this.inputQuantidade = document.querySelector('#quantidade') as HTMLInputElement; //Fazendo o mesmo cast de forma diferente
-        this.inputValor = document.querySelector('#valor') as HTMLInputElement;
+        this.inputValor = document.querySelector('#valor') as HTMLInputElement; */
         this.negociacoesView.update(this.negociacoes);
     }
 
+    @inspect
+    @logarTempoDeExecucao()
     public adiciona(): void {
         // Chamada de um método estático para não precisar criar instância da classe
         const negociacao = Negociacao.criaDe(
