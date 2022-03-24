@@ -1,3 +1,4 @@
+import { NegociacoesService } from '../services/negociacoes-service.js';
 import { DiasDaSemana } from '../enums/dias-da-semana.js';
 import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
@@ -18,6 +19,7 @@ export class NegociacaoController {
     private negociacoes = new Negociacoes(); //Obtendo uma inferência de negociações
     private negociacoesView = new NegociacoesView('#negociacoesView');
     private mensagemView = new MensagemView('#mensagemView');
+    private negociacoesService = new NegociacoesService();
 
     constructor() {
 /*      this.inputData = <HTMLInputElement> document.querySelector('#data'); //Fazendo um cast explícito no ts para o objeto HTMLInputElement
@@ -44,6 +46,16 @@ export class NegociacaoController {
         this.negociacoes.adiciona(negociacao); //Adicionando uma negociação a uma lista de negociações.
         this.limparFormulario();
         this.atualizaView();
+    }
+
+    public importaDados(): void {
+        this.negociacoesService.obterNegociacoesDoDia()
+            .then(negociacoesDeHoje => { //Os dados detornados chegam nesse then como um Array de Negociações
+                for(let negociacao of negociacoesDeHoje) { //Percorrendo o array de negociações
+                    this.negociacoes.adiciona(negociacao); //Chamando o método para adicionar cada negociação
+                }
+                this.negociacoesView.update(this.negociacoes); //Atualiza a view com o dado da negociação que chegou.
+            });
     }
 
     private ehDiaUtil(data: Date) {
