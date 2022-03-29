@@ -51,7 +51,14 @@ export class NegociacaoController {
     }
 
     public importaDados(): void {
-        this.negociacoesService.obterNegociacoesDoDia()
+        this.negociacoesService.obterNegociacoesDoDia() //Recebendo as negociações.
+            .then(negociacoesDeHoje => {
+                return negociacoesDeHoje.filter(negociacaoDeHoje => { //Executando um filtro nas negociações de hoje
+                    return !this.negociacoes //Vai ser retornado apenas a negociação que não for igual a negociacaoDeHoje
+                                .lista()
+                                .some(negociacao => negociacao.ehIgual(negociacaoDeHoje)) //função some se encontrar algo verdadeiro, ele para e retorna true 
+                });
+            })
             .then(negociacoesDeHoje => { //Os dados detornados chegam nesse then como um Array de Negociações
                 for(let negociacao of negociacoesDeHoje) { //Percorrendo o array de negociações
                     this.negociacoes.adiciona(negociacao); //Chamando o método para adicionar cada negociação
