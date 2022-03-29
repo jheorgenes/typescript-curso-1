@@ -7,6 +7,7 @@ import { Negociacao } from '../models/negociacao.js';
 import { logarTempoDeExecucao } from '../decorators/logar-tempo-de-execucao.js';
 import { inspect } from '../decorators/inspect.js';
 import { domInjector } from '../decorators/dom-injector.js';
+import { imprimir } from '../utils/imprimir.js';
 
 export class NegociacaoController {
     
@@ -43,7 +44,8 @@ export class NegociacaoController {
             return; //Parando a execução desse método.
         }
         
-        this.negociacoes.adiciona(negociacao); //Adicionando uma negociação a uma lista de negociações.
+        this.negociacoes.adiciona(negociacao); //Adicionando uma negociação a uma lista de negociações. 
+        imprimir(negociacao, this.negociacoes);
         this.limparFormulario();
         this.atualizaView();
     }

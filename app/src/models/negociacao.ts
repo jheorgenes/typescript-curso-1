@@ -1,4 +1,6 @@
-export class Negociacao {
+import { Imprimivel } from "../utils/imprimivel.js";
+
+export class Negociacao implements Imprimivel {
 
     constructor(
         private _data: Date,
@@ -6,6 +8,15 @@ export class Negociacao {
         public readonly quantidade: number, 
         public readonly valor: number
     ) {}
+
+    public static criaDe(dataString: string, quantidadeString: string, valorString: string): Negociacao {
+        /* Atribuíndo valores as variáveis conforme chegou do input */
+        const exp = /-/g; //Criando uma expressão regurar identificando o ífem
+        const date = new Date(dataString.replace(exp, ',')); //convertendo a string data pegando um regex e substituíndo com virgula
+        const quantidade = parseInt(quantidadeString);
+        const valor = parseFloat(valorString);
+        return new Negociacao(date, quantidade, valor);
+    }
 
     get volume(): number {
         return this.quantidade * this.valor;
@@ -18,12 +29,11 @@ export class Negociacao {
         return data;
     }
 
-    public static criaDe(dataString: string, quantidadeString: string, valorString: string): Negociacao {
-        /* Atribuíndo valores as variáveis conforme chegou do input */
-        const exp = /-/g; //Criando uma expressão regurar identificando o ífem
-        const date = new Date(dataString.replace(exp, ',')); //convertendo a string data pegando um regex e substituíndo com virgula
-        const quantidade = parseInt(quantidadeString);
-        const valor = parseFloat(valorString);
-        return new Negociacao(date, quantidade, valor);
+    public paraTexto(): string {
+        return `
+            Data: ${this.data},
+            Quantidade: ${this.quantidade},
+            Valor: ${this.valor}
+        `
     }
 }

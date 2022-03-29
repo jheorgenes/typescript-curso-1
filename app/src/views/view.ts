@@ -1,5 +1,3 @@
-
-
 export abstract class View <T> { //Recebe um tipo genérico que será utilizado pelas classes filhas.
 
     protected elemento: HTMLElement; //Atributo da classe HTMLElement injetado.
